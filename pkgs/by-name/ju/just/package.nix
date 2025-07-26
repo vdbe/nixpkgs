@@ -19,25 +19,24 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "just";
-  version = "1.42.2";
-  outputs =
-    [
-      "out"
-    ]
-    ++ lib.optionals installManPages [
-      "man"
-    ]
-    ++ lib.optionals withDocumentation [ "doc" ];
+  version = "1.42.3";
+  outputs = [
+    "out"
+  ]
+  ++ lib.optionals installManPages [
+    "man"
+  ]
+  ++ lib.optionals withDocumentation [ "doc" ];
 
   src = fetchFromGitHub {
     owner = "casey";
     repo = "just";
     tag = version;
-    hash = "sha256-CbtaYXkpUQ9FgzSgm4j+7W0JibeHVHr1Wv9ObR75KOk=";
+    hash = "sha256-SinL3sdSTtE3oGHe54P4n1jWarJIwYXWp1kPNXGwKIA=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-nxIzxrMdSDNq46ouzcCDoqaNA5fAdqkbb+ovufwRXWM=";
+  cargoHash = "sha256-byE2ssjEy6etHzkbeYCuW69TC8ErkYhU7oTt0U107Ac=";
 
   nativeBuildInputs =
     lib.optionals (installShellCompletions || installManPages) [ installShellFiles ]
@@ -72,7 +71,8 @@ rustPlatform.buildRustPackage rec {
 
   cargoBuildFlags = [
     "--package=just"
-  ] ++ (lib.optionals withDocumentation [ "--package=generate-book" ]);
+  ]
+  ++ (lib.optionals withDocumentation [ "--package=generate-book" ]);
 
   checkFlags = [
     "--skip=backticks::trailing_newlines_are_stripped" # Wants to use python3 as alternate shell

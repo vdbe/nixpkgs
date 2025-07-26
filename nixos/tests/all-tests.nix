@@ -89,6 +89,16 @@ let
     featureFlags.minimalModules = { };
   };
   evalMinimalConfig = module: nixosLib.evalModules { modules = [ module ]; };
+  evalSystem =
+    module:
+    import ../lib/eval-config.nix {
+      system = null;
+      modules = [
+        ../modules/misc/nixpkgs/read-only.nix
+        { nixpkgs.pkgs = pkgs; }
+        module
+      ];
+    };
 
   inherit
     (rec {
@@ -589,6 +599,7 @@ in
   gerrit = runTest ./gerrit.nix;
   geth = runTest ./geth.nix;
   ghostunnel = runTest ./ghostunnel.nix;
+  ghostunnel-modular = runTest ./ghostunnel-modular.nix;
   gitdaemon = runTest ./gitdaemon.nix;
   gitea = handleTest ./gitea.nix { giteaPackage = pkgs.gitea; };
   github-runner = runTest ./github-runner.nix;
@@ -700,6 +711,7 @@ in
   hledger-web = runTest ./hledger-web.nix;
   hockeypuck = runTest ./hockeypuck.nix;
   home-assistant = runTest ./home-assistant.nix;
+  homebridge = runTest ./homebridge.nix;
   hostname = handleTest ./hostname.nix { };
   hound = runTest ./hound.nix;
   hub = runTest ./git/hub.nix;
@@ -865,6 +877,7 @@ in
   matrix-continuwuity = runTest ./matrix/continuwuity.nix;
   matrix-synapse = runTest ./matrix/synapse.nix;
   matrix-synapse-workers = runTest ./matrix/synapse-workers.nix;
+  matrix-tuwunel = runTest ./matrix/tuwunel.nix;
   mautrix-discord = runTest ./matrix/mautrix-discord.nix;
   mattermost = handleTest ./mattermost { };
   mautrix-meta-postgres = runTest ./matrix/mautrix-meta-postgres.nix;
@@ -888,9 +901,13 @@ in
   miriway = runTest ./miriway.nix;
   misc = runTest ./misc.nix;
   misskey = runTest ./misskey.nix;
+  mitmproxy = runTest ./mitmproxy.nix;
   mjolnir = runTest ./matrix/mjolnir.nix;
   mobilizon = runTest ./mobilizon.nix;
   mod_perl = runTest ./mod_perl.nix;
+  modularService = pkgs.callPackage ../modules/system/service/systemd/test.nix {
+    inherit evalSystem;
+  };
   molly-brown = runTest ./molly-brown.nix;
   mollysocket = runTest ./mollysocket.nix;
   monado = runTest ./monado.nix;
@@ -1058,7 +1075,7 @@ in
   ollama-cuda = runTestOn [ "x86_64-linux" "aarch64-linux" ] ./ollama-cuda.nix;
   ollama-rocm = runTestOn [ "x86_64-linux" "aarch64-linux" ] ./ollama-rocm.nix;
   ombi = runTest ./ombi.nix;
-  omnom = runTest ./omnom.nix;
+  omnom = runTest ./omnom;
   openarena = runTest ./openarena.nix;
   openbao = runTest ./openbao.nix;
   opencloud = runTest ./opencloud.nix;
@@ -1079,6 +1096,7 @@ in
   open-web-calendar = runTest ./web-apps/open-web-calendar.nix;
   ocsinventory-agent = handleTestOn [ "x86_64-linux" "aarch64-linux" ] ./ocsinventory-agent.nix { };
   orthanc = runTest ./orthanc.nix;
+  owi = runTest ./owi.nix;
   owncast = runTest ./owncast.nix;
   outline = runTest ./outline.nix;
   i18n = runTest ./i18n.nix;
@@ -1220,6 +1238,7 @@ in
   public-inbox = runTest ./public-inbox.nix;
   pufferpanel = runTest ./pufferpanel.nix;
   pulseaudio = discoverTests (import ./pulseaudio.nix);
+  qbittorrent = runTest ./qbittorrent.nix;
   qboot = handleTestOn [ "x86_64-linux" "i686-linux" ] ./qboot.nix { };
   qemu-vm-restrictnetwork = handleTest ./qemu-vm-restrictnetwork.nix { };
   qemu-vm-volatile-root = runTest ./qemu-vm-volatile-root.nix;
@@ -1330,7 +1349,7 @@ in
   ssh-audit = runTest ./ssh-audit.nix;
   sssd = handleTestOn [ "x86_64-linux" "aarch64-linux" ] ./sssd.nix { };
   sssd-ldap = handleTestOn [ "x86_64-linux" "aarch64-linux" ] ./sssd-ldap.nix { };
-  stalwart-mail = runTest ./stalwart-mail.nix;
+  stalwart-mail = runTest ./stalwart/stalwart-mail.nix;
   stargazer = runTest ./web-servers/stargazer.nix;
   starship = runTest ./starship.nix;
   stash = handleTestOn [ "x86_64-linux" "aarch64-linux" ] ./stash.nix { };
@@ -1549,7 +1568,10 @@ in
   whoogle-search = runTest ./whoogle-search.nix;
   wiki-js = runTest ./wiki-js.nix;
   wine = handleTest ./wine.nix { };
-  wireguard = handleTest ./wireguard { };
+  wireguard = import ./wireguard {
+    inherit pkgs runTest;
+    inherit (pkgs) lib;
+  };
   wg-access-server = runTest ./wg-access-server.nix;
   without-nix = runTest ./without-nix.nix;
   wmderland = runTest ./wmderland.nix;
