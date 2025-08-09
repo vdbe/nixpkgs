@@ -333,6 +333,10 @@ in
     dependencies = [ self.blink-cmp ];
   };
 
+  blink-cmp-words = super.blink-cmp-words.overrideAttrs {
+    dependencies = [ self.blink-cmp ];
+  };
+
   bluloco-nvim = super.bluloco-nvim.overrideAttrs {
     dependencies = [ self.lush-nvim ];
   };
@@ -386,6 +390,13 @@ in
     dependencies = with self; [
       telescope-nvim
       plenary-nvim
+    ];
+  };
+
+  checkmate-nvim = super.checkmate-nvim.overrideAttrs {
+    checkInputs = with self; [
+      # checkmate.snippets
+      luasnip
     ];
   };
 
@@ -993,6 +1004,13 @@ in
 
   defx-nvim = super.defx-nvim.overrideAttrs {
     dependencies = [ self.nvim-yarp ];
+  };
+
+  demicolon-nvim = super.demicolon-nvim.overrideAttrs {
+    dependencies = with self; [
+      nvim-treesitter
+      nvim-treesitter-textobjects
+    ];
   };
 
   denops-vim = super.denops-vim.overrideAttrs {
