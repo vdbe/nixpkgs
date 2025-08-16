@@ -201,7 +201,7 @@ let
         echo "Tried for at least 30 seconds, giving up..."
         exit 1
       fi
-      count=$((count++))
+      count=$((++count))
     done
 
     ${recoverIdmAdmin}
@@ -671,6 +671,8 @@ in
   };
 
   config = mkIf (cfg.enableClient || cfg.enableServer || cfg.enablePam) {
+    warnings = lib.optionals (cfg.package.eolMessage != "") [ cfg.package.eolMessage ];
+
     assertions =
       let
         entityList =

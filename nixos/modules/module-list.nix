@@ -31,6 +31,7 @@
   ./config/stub-ld.nix
   ./config/swap.nix
   ./config/sysctl.nix
+  ./config/sysfs.nix
   ./config/system-environment.nix
   ./config/system-path.nix
   ./config/terminfo.nix
@@ -591,6 +592,7 @@
   ./services/development/jupyterhub/default.nix
   ./services/development/livebook.nix
   ./services/development/lorri.nix
+  ./services/development/nixseparatedebuginfod2.nix
   ./services/development/nixseparatedebuginfod.nix
   ./services/development/rstudio-server/default.nix
   ./services/development/vsmartcard-vpcd.nix
@@ -884,6 +886,7 @@
   ./services/misc/open-webui.nix
   ./services/misc/orthanc.nix
   ./services/misc/osrm.nix
+  ./services/misc/overseerr.nix
   ./services/misc/owncast.nix
   ./services/misc/packagekit.nix
   ./services/misc/paisa.nix
@@ -1683,6 +1686,7 @@
   ./services/web-apps/simplesamlphp.nix
   ./services/web-apps/slskd.nix
   ./services/web-apps/snipe-it.nix
+  ./services/web-apps/snips-sh.nix
   ./services/web-apps/sogo.nix
   ./services/web-apps/stash.nix
   ./services/web-apps/stirling-pdf.nix
